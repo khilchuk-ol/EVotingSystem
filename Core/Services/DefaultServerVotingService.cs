@@ -11,7 +11,6 @@ namespace Core.Services
         private readonly IRsaEncryptionService rsaEncryptionService;
         private readonly IDatabase database;
         private readonly IMapper<Candidate, CandidateModel> candidateEntityToModelMapper;
-        private readonly IMapper<string, string> hasher;
         private readonly IMapper<string, BulletinModel> stringToBulletinModelMapper;
 
         public RsaKey PublicKey => rsaEncryptionService.PublicKey;
@@ -61,9 +60,8 @@ namespace Core.Services
                 c.Id == bulletin.CandidateId
             )) return false;
 
-            // Check if bulletin doesn't exist
+            // Check if candidate sent valid bulletin
             if ((await database.Bulletins.GetAllAsync()).Any(b => 
-                b.CandidateId == bulletin.CandidateId &&
                 b.VoterId == bulletin.GovernmentId
             )) return false;
 

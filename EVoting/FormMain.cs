@@ -26,9 +26,9 @@ namespace EVoting
                 BirthDate = DateOnly.FromDateTime(date),
                 CandidateId = (listBoxCandidates.SelectedItem as CandidateModel)?.Id ?? 0
             };
-            await votingService.Vote(bulletin);
+            var voteTask = votingService.Vote(bulletin);
             MessageBox.Show("Vote sent.");
-            //await voteTask;
+            await voteTask;
         }
     }
 }

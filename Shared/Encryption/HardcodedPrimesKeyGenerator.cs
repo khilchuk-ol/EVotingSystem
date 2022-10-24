@@ -29,7 +29,7 @@ namespace Shared.Encryption
 
             var prc = primes.Count;
             var pi = random.Next(prc);
-            var qi = (pi + random.Next(prc - 1)) % prc;
+            var qi = (pi + random.Next(1, prc - 1)) % prc;
 
             var p = primes[pi];
             var q = primes[qi];
@@ -44,7 +44,7 @@ namespace Shared.Encryption
 
         private static BigInteger PrimeTo(BigInteger fi)
         {
-            var result = 13;
+            var result = 31;
             while (fi % result == 0) result++;
             return result;
         }

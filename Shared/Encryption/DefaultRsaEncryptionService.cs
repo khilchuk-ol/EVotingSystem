@@ -60,13 +60,31 @@ namespace Shared.Encryption
 
         private static BigInteger ApplyKey(BigInteger message, RsaKey key)
         {
-            // Simple {message^exponent % module} implementation
-            // (1 * 11^19) % 100 = (11 * 11^18) % 100 = (21 * 11^17) % 100 = ...
-            BigInteger result = BigInteger.One;
-            for (BigInteger i = 0; i < key.exponent; i++)
+            // Logarithmic {message^exponent % module} implementation
+            // (1 * 11^19) % 100 = (11 * 11^18) % 100 = (11 * 121^9) % 100 = (11 * 21^9) = ...
+            var freeUnit = BigInteger.One;
+            var result = message;
+            var module = key.module;
+            var exponent = key.exponent;
+
+            while (exponent > 1)
             {
-                result *= message;
-                result %= key.module;
+                var bit = exponent & 1;
+                if (bit == 1) freeUnit = (freeUnit * result) % module;
+                result = Pow(result, 2) % module;
+                exponent >>= 1;
+            }
+            result = (result * freeUnit) % module;
+
+            return result;
+        }
+
+        private static BigInteger Pow(BigInteger number, BigInteger exp)
+        {
+            var result = BigInteger.One;
+            for (BigInteger i = 0; i < exp; i++)
+            {
+                result *= number;
             }
             return result;
         }
