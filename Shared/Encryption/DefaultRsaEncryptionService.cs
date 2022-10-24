@@ -62,19 +62,18 @@ namespace Shared.Encryption
         {
             // Logarithmic {message^exponent % module} implementation
             // (1 * 11^19) % 100 = (11 * 11^18) % 100 = (11 * 121^9) % 100 = (11 * 21^9) = ...
-            var freeUnit = BigInteger.One;
-            var result = message;
+            var result = BigInteger.One;
+            var expBase = message;
             var module = key.module;
             var exponent = key.exponent;
 
-            while (exponent > 1)
+            while (exponent > 0)
             {
                 var bit = exponent & 1;
-                if (bit == 1) freeUnit = (freeUnit * result) % module;
-                result = Pow(result, 2) % module;
+                if (bit == 1) result = (result * expBase) % module;
+                expBase = Pow(expBase, 2) % module;
                 exponent >>= 1;
             }
-            result = (result * freeUnit) % module;
 
             return result;
         }
