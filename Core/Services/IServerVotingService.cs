@@ -1,5 +1,6 @@
 ﻿using Shared.Encryption;
 using Shared.Models;
+using Shared.ValueObjects;
 
 namespace Core.Services
 {
@@ -8,6 +9,6 @@ namespace Core.Services
         RsaKey PublicKey { get; }
 
         Task<IEnumerable<CandidateModel>> GetAllCandidatesAsync();
-        Task Vote(string encryptedBulletin, string eds, RsaKey userOpenKey);
+        Task<ResultCode> Vote(string encryptedBulletin, string eds, RsaKey userOpenKey);
     }
 }

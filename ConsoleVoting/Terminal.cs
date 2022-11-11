@@ -1,10 +1,6 @@
 ﻿using Client.Services;
 using Shared.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Shared.ValueObjects;
 
 namespace ConsoleVoting
 {
@@ -22,7 +18,8 @@ namespace ConsoleVoting
             while (true)
             {
                 WelcomeMessage();
-                await votingService.Vote(await ReadInputs());
+                var res = await votingService.Vote(await ReadInputs());
+                PrintResult(res);
                 Restart();
             }
         }
@@ -94,6 +91,16 @@ namespace ConsoleVoting
         private void WelcomeMessage()
         {
             Console.WriteLine("Welcome");
+        }
+
+        private void PrintResult(ResultCode code)
+        {
+            if (code != ResultCode.Success)
+            {
+                Console.Write("Could not perform voting. Error: ");
+            }
+            
+            Console.WriteLine(code.ToString());
         }
     }
 }

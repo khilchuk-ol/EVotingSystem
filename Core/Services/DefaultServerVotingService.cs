@@ -3,6 +3,7 @@ using Core.Entities;
 using Shared.Encryption;
 using Shared.Mappers;
 using Shared.Models;
+using Shared.ValueObjects;
 
 namespace Core.Services
 {
@@ -33,19 +34,23 @@ namespace Core.Services
                 .Select(candidateEntityToModelMapper.Map).ToList();
         }
 
-        public async Task Vote(string encryptedBulletin, string eds, RsaKey userOpenKey)
+        public async Task<ResultCode> Vote(string encryptedBulletin, string eds, RsaKey userOpenKey)
         {
             var decryptedBulletinTask = rsaEncryptionService.ApplyPrivateKeyAsync(encryptedBulletin);
             var hashedBulletinEdsTask = rsaEncryptionService.ApplyPublicKeyAsync(eds, userOpenKey);
             var decryptedBulletin = await decryptedBulletinTask;
             var hashedBulletinVoteTask = rsaEncryptionService.Hash(decryptedBulletin, userOpenKey);
-            if (!Equals(await hashedBulletinVoteTask, await hashedBulletinEdsTask)) return;
+            if (!Equals(await hashedBulletinVoteTask, await hashedBulletinEdsTask)) return ResultCode.DataMismatch;
 
             var bulletin = stringToBulletinModelMapper.Map(decryptedBulletin);
-            if (await ValidateVote(bulletin)) ApplyVote(bulletin);
+
+            var checkRes = await ValidateVote(bulletin);
+            if (checkRes == ResultCode.Success) ApplyVote(bulletin);
+
+            return checkRes;
         }
 
-        private async Task<bool> ValidateVote(BulletinModel bulletin)
+        private async Task<ResultCode> ValidateVote(BulletinModel bulletin)
         {
             // Check if voter exists and can vote
             var voter = (await database.Voters.GetAllAsync()).FirstOrDefault(v => 
@@ -53,19 +58,20 @@ namespace Core.Services
                 v.Name == bulletin.Name &&
                 v.Surname == bulletin.Surname &&
                 v.BirthDate == bulletin.BirthDate);
-            if (voter == default || !voter.CanVote) return false;
+            if (voter == default) return ResultCode.VoterNotFound;
+            if (!voter.CanVote) return ResultCode.VoterCantVote;
 
             // Check if candidate exists
             if (!(await database.Candidates.GetAllAsync()).Any(c => 
                 c.Id == bulletin.CandidateId
-            )) return false;
+            )) return ResultCode.CandidateNotFound;
 
             // Check if candidate sent valid bulletin
             if ((await database.Bulletins.GetAllAsync()).Any(b => 
                 b.VoterId == bulletin.GovernmentId
-            )) return false;
+            )) return ResultCode.VoterAlreadyVoted;
 
-            return true;
+            return ResultCode.Success;
         }
 
         private async void ApplyVote(BulletinModel bulletinModel)

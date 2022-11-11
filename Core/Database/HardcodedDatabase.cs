@@ -30,41 +30,57 @@ namespace Core.Database
                 new Voter()
                 {
                     GovernmentId = "UA121213",
-                    Name = "",
-                    Surname = "",
-                    BirthDate = new DateOnly(),
+                    Name = "aa",
+                    Surname = "aa",
+                    BirthDate = new DateOnly(1990, 1, 1),
                     CanVote = true,
                 },
                 new Voter()
                 {
                     GovernmentId = "UA121214",
-                    Name = "",
-                    Surname = "",
-                    BirthDate = new DateOnly(),
-                    CanVote = true,
+                    Name = "bb",
+                    Surname = "bb",
+                    BirthDate = new DateOnly(2010, 1, 1),
+                    CanVote = false,
                 },
                 new Voter()
                 {
                     GovernmentId = "UA121215",
-                    Name = "",
-                    Surname = "",
-                    BirthDate = new DateOnly(),
+                    Name = "cc",
+                    Surname = "cc",
+                    BirthDate = new DateOnly(1990, 1, 1),
                     CanVote = true,
                 },
                 new Voter()
                 {
                     GovernmentId = "UA121216",
-                    Name = "",
-                    Surname = "",
-                    BirthDate = new DateOnly(),
+                    Name = "dd",
+                    Surname = "dd",
+                    BirthDate = new DateOnly(1990, 1, 1),
                     CanVote = true,
                 },
                 new Voter()
                 {
                     GovernmentId = "UA121217",
-                    Name = "",
-                    Surname = "",
-                    BirthDate = new DateOnly(),
+                    Name = "ee",
+                    Surname = "ee",
+                    BirthDate = new DateOnly(1990, 1, 1),
+                    CanVote = true,
+                },
+                new Voter()
+                {
+                    GovernmentId = "UA121217",
+                    Name = "ff",
+                    Surname = "ff",
+                    BirthDate = new DateOnly(1990, 1, 1),
+                    CanVote = true,
+                },
+                new Voter()
+                {
+                    GovernmentId = "UA121217",
+                    Name = "gg",
+                    Surname = "gg",
+                    BirthDate = new DateOnly(1990, 1, 1),
                     CanVote = true,
                 },
             });
