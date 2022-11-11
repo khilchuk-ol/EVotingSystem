@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace Shared.Encryption
+namespace Shared.RsaEncryption
 {
     public interface IKeyGenerator
     {

@@ -1,4 +1,4 @@
-﻿using Shared.Encryption;
+﻿using Shared.RsaEncryption;
 using Shared.Models;
 using Shared.ValueObjects;
 

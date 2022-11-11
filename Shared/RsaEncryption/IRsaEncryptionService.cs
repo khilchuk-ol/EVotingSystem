@@ -1,4 +1,4 @@
-﻿namespace Shared.Encryption
+﻿namespace Shared.RsaEncryption
 {
     public interface IRsaEncryptionService
     {

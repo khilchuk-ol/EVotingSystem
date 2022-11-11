@@ -1,18 +1,18 @@
 ﻿using Core.Services;
-using Shared.Encryption;
+using Shared.RsaEncryption;
 using Shared.Mappers;
 using Shared.Models;
 using Shared.ValueObjects;
 
 namespace Client.Services
 {
-    public class DefaultClientVotingService : IClientVotingService
+    public class SimpleClientVotingService : IClientVotingService
     {
         private readonly IServerVotingService votingService;
         private readonly IMapper<BulletinModel, string> bulletinModelToStringMapper;
         private readonly IRsaEncryptionService rsaEncryptionService;
 
-        public DefaultClientVotingService(
+        public SimpleClientVotingService(
             IServerVotingService votingService,
             IMapper<BulletinModel, string> bulletinModelToStringMapper,
             IRsaEncryptionService rsaEncryptionService)

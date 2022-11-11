@@ -1,13 +1,13 @@
 ﻿using Core.Database;
 using Core.Entities;
-using Shared.Encryption;
+using Shared.RsaEncryption;
 using Shared.Mappers;
 using Shared.Models;
 using Shared.ValueObjects;
 
 namespace Core.Services
 {
-    public class DefaultServerVotingService : IServerVotingService
+    public class SimpleServerVotingService : IServerVotingService
     {
         private readonly IRsaEncryptionService rsaEncryptionService;
         private readonly IDatabase database;
@@ -16,7 +16,7 @@ namespace Core.Services
 
         public RsaKey PublicKey => rsaEncryptionService.PublicKey;
 
-        public DefaultServerVotingService(
+        public SimpleServerVotingService(
             IRsaEncryptionService rsaEncryptionService,
             IDatabase database,
             IMapper<Candidate, CandidateModel> candidateEntityToModelMapper,

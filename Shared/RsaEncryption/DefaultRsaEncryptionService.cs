@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using System.Text;
 
-namespace Shared.Encryption
+namespace Shared.RsaEncryption
 {
     public class DefaultRsaEncryptionService : IRsaEncryptionService
     {
